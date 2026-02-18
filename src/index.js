@@ -85,8 +85,8 @@ async function start() {
     await browser.launchBrowser();
     currentPage = await browser.createPage();
     
-    app.listen(config.port, () => {
-      console.log(`ChromeBot running on http://localhost:${config.port}`);
+    app.listen(config.port, config.host, () => {
+      console.log(`ChromeBot running on http://${config.host === '0.0.0.0' ? '0.0.0.0' : 'localhost'}:${config.port}`);
       console.log('Ready to receive commands from OpenClaw');
     });
   } catch (error) {

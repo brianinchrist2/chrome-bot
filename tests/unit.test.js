@@ -81,6 +81,11 @@ describe('Config', () => {
     expect(cfg.existingChrome).toHaveProperty('enabled');
     expect(cfg.existingChrome).toHaveProperty('browserWSEndpoint');
   });
+
+  test('config should have host setting', () => {
+    const cfg = require('../src/config');
+    expect(cfg).toHaveProperty('host');
+  });
 });
 
 // 测试版本管理

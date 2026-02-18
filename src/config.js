@@ -1,5 +1,6 @@
 module.exports = {
   port: process.env.PORT || 8765,
+  host: process.env.HOST || '0.0.0.0',  // 0.0.0.0 允许远程连接，localhost 仅本地
   browser: {
     headless: false,
     executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
