@@ -2,6 +2,7 @@ module.exports = {
   port: process.env.PORT || 8765,
   browser: {
     headless: false,
+    executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
     defaultViewport: { width: 1280, height: 720 },
     userDataDir: null,
     args: [
@@ -15,7 +16,7 @@ module.exports = {
   },
   // 连接已有Chrome设置
   existingChrome: {
-    enabled: false,
+    enabled: true,
     browserWSEndpoint: 'http://localhost:9222'
   },
   timeout: 30000,
