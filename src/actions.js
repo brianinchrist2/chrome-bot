@@ -111,6 +111,65 @@ async function getText(page, { selector }) {
 }
 
 /**
+ * 获取元素属性
+ */
+async function getAttribute(page, { selector, attribute }) {
+  const value = await page.$eval(selector, (el, attr) => el.getAttribute(attr), attribute).catch(() => null);
+  return response('getAttribute', { selector, attribute, value });
+}
+
+/**
+ * 检查元素是否可见
+ */
+async function isVisible(page, { selector }) {
+  const visible = await page.$eval(selector, el => {
+    const style = window.getComputedStyle(el);
+    return el.offsetParent !== null && style.visibility !== 'hidden' && style.display !== 'none';
+  }).catch(() => false);
+  return response('isVisible', { selector, visible });
+}
+
+/**
+ * 悬停元素
+ */
+async function hover(page, { selector }) {
+  await page.hover(selector);
+  return response('hover', { selector });
+}
+
+/**
+ * 双击元素
+ */
+async function doubleClick(page, { selector }) {
+  await page.dblclick(selector);
+  return response('doubleClick', { selector });
+}
+
+/**
+ * 等待函数执行结果为真
+ */
+async function waitForFunction(page, { script, timeout = 30000 }) {
+  await page.waitForFunction(script, { timeout });
+  return response('waitForFunction', { script });
+}
+
+/**
+ * 等待导航完成
+ */
+async function waitForNavigation(page, { timeout = 30000 } = {}) {
+  await page.waitForNavigation({ timeout, waitUntil: 'networkidle0' });
+  return response('waitForNavigation', { url: page.url() });
+}
+
+/**
+ * 选择下拉选项
+ */
+async function selectOption(page, { selector, value }) {
+  await page.select(selector, value);
+  return response('selectOption', { selector, value });
+}
+
+/**
  * 后退
  */
 async function back(page) {
@@ -156,7 +215,14 @@ const actions = {
   scroll,
   evaluate,
   waitForSelector,
+  waitForFunction,
+  waitForNavigation,
   getText,
+  getAttribute,
+  isVisible,
+  hover,
+  doubleClick,
+  selectOption,
   back,
   forward,
   refresh,
