@@ -61,18 +61,25 @@ describe('Actions', () => {
 // 测试 config
 describe('Config', () => {
   test('should have valid config', () => {
-    const config = require('../src/config');
-    expect(config.port).toBe(8765);
-    expect(config.browser).toBeDefined();
-    expect(config.timeout).toBe(30000);
+    const cfg = require('../src/config');
+    expect(cfg.port).toBe(8765);
+    expect(cfg.browser).toBeDefined();
+    expect(cfg.timeout).toBe(30000);
   });
 
   test('config should have all required fields', () => {
-    const config = require('../src/config');
-    expect(config).toHaveProperty('port');
-    expect(config).toHaveProperty('browser');
-    expect(config).toHaveProperty('timeout');
-    expect(config.browser).toHaveProperty('headless');
+    const cfg = require('../src/config');
+    expect(cfg).toHaveProperty('port');
+    expect(cfg).toHaveProperty('browser');
+    expect(cfg).toHaveProperty('timeout');
+    expect(cfg.browser).toHaveProperty('headless');
+  });
+
+  test('config should support existingChrome settings', () => {
+    const cfg = require('../src/config');
+    expect(cfg).toHaveProperty('existingChrome');
+    expect(cfg.existingChrome).toHaveProperty('enabled');
+    expect(cfg.existingChrome).toHaveProperty('browserWSEndpoint');
   });
 });
 

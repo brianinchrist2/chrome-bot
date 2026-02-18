@@ -13,6 +13,11 @@ module.exports = {
       '--disable-popup-blocking'
     ]
   },
+  // 连接已有Chrome设置
+  existingChrome: {
+    enabled: false,
+    browserWSEndpoint: 'http://localhost:9222'
+  },
   timeout: 30000,
   maxConcurrentPages: 5
 };

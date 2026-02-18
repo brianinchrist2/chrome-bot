@@ -16,7 +16,20 @@ async function launchBrowser() {
     return browser;
   }
   
-  browser = await puppeteer.launch(config.browser);
+  // 如果启用连接已有Chrome
+  if (config.existingChrome && config.existingChrome.enabled) {
+    console.log('[Browser] Connecting to existing Chrome...');
+    try {
+      browser = await puppeteer.connect({
+        browserURL: config.existingChrome.browserWSEndpoint
+      });
+    } catch (err) {
+      console.log('[Browser] Failed to connect, launching new browser');
+      browser = await puppeteer.launch(config.browser);
+    }
+  } else {
+    browser = await puppeteer.launch(config.browser);
+  }
   
   browser.on('disconnected', () => {
     console.log('[Browser] Disconnected');
