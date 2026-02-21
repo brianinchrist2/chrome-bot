@@ -170,6 +170,61 @@ async function selectOption(page, { selector, value }) {
 }
 
 /**
+ * 在指定 iframe 中点击元素
+ */
+async function frameClick(page, { frameSelector, selector }) {
+  const frameElement = await page.$(frameSelector);
+  const frame = await frameElement.contentFrame();
+  if (!frame) throw new Error(`Frame not found: ${frameSelector}`);
+  await frame.click(selector);
+  return response('frameClick', { frameSelector, selector });
+}
+
+/**
+ * 在指定 iframe 中输入文本
+ */
+async function frameType(page, { frameSelector, selector, text }) {
+  const frameElement = await page.$(frameSelector);
+  const frame = await frameElement.contentFrame();
+  if (!frame) throw new Error(`Frame not found: ${frameSelector}`);
+  await frame.type(selector, text);
+  return response('frameType', { frameSelector, selector, text });
+}
+
+/**
+ * 在指定 iframe 中执行 JavaScript
+ */
+async function frameEvaluate(page, { frameSelector, script }) {
+  const frameElement = await page.$(frameSelector);
+  const frame = await frameElement.contentFrame();
+  if (!frame) throw new Error(`Frame not found: ${frameSelector}`);
+  const result = await frame.evaluate(script);
+  return response('frameEvaluate', { result });
+}
+
+/**
+ * 获取 iframe HTML
+ */
+async function frameGetHtml(page, { frameSelector }) {
+  const frameElement = await page.$(frameSelector);
+  const frame = await frameElement.contentFrame();
+  if (!frame) throw new Error(`Frame not found: ${frameSelector}`);
+  const html = await frame.content();
+  return response('frameGetHtml', { frameSelector, html });
+}
+
+/**
+ * 等待 iframe 出现
+ */
+async function waitForFrame(page, { frameSelector, timeout = 30000 }) {
+  await page.waitForSelector(frameSelector, { timeout });
+  const frameElement = await page.$(frameSelector);
+  const frame = await frameElement.contentFrame();
+  if (!frame) throw new Error(`Frame appeared but content is inaccessible: ${frameSelector}`);
+  return response('waitForFrame', { frameSelector });
+}
+
+/**
  * 后退
  */
 async function back(page) {
@@ -223,6 +278,11 @@ const actions = {
   hover,
   doubleClick,
   selectOption,
+  frameClick,
+  frameType,
+  frameEvaluate,
+  frameGetHtml,
+  waitForFrame,
   back,
   forward,
   refresh,
